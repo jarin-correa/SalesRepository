@@ -17,8 +17,7 @@ public class SalesSlip {
 
 	public void addCart(String it, String c, String q) {
 		
-		//double c = Double.parseDouble(textFieldCost.getText());
-		//int q = Integer.parseInt(textFieldQuantity.getText());
+		
 		items.add(it);
 		cost.add(Double.parseDouble(c));
 		costDollars = String.format("%,.2f", cost.get(cost.size() - 1));
