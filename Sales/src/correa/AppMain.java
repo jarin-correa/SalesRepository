@@ -1,10 +1,15 @@
 package correa;
 
 import java.awt.EventQueue;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.BorderLayout;
+import javax.swing.JScrollBar;
+import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -12,10 +17,21 @@ import javax.swing.JTextArea;
 
 public class AppMain {
 
-	private JFrame frame;
-	private JTextField textFieldItem;
-	private JTextField textFieldCost;
-	private JTextField textFieldQuantity;
+	public JFrame frame;
+	public JTextField textFieldItem;
+	public JScrollPane scrollPane_1;
+	public JTextField textFieldCost;
+	public JTextField textFieldQuantity;
+	public JTextArea textAreaList;
+	public JLabel lblQuantity;
+	public JLabel lblListTotal; 
+	public JButton btnAdd;
+	public JLabel lblNewLabel;
+	public JLabel lblItem;
+	public JLabel lblSalesList;
+	public String str = "";
+	public SalesSlip slip;
+	public JTextArea textAreaTotal;
 
 	/**
 	 * Launch the application.
@@ -38,65 +54,90 @@ public class AppMain {
 	 */
 	public AppMain() {
 		initialize();
+		createEvents();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		JLabel lblSalesList = new JLabel("Sales List");
+
+		lblSalesList = new JLabel("Sales List");
 		lblSalesList.setBounds(181, 11, 67, 14);
 		frame.getContentPane().add(lblSalesList);
-		
-		JLabel lblItem = new JLabel("Item:");
+
+		lblItem = new JLabel("Item:");
 		lblItem.setBounds(31, 30, 48, 14);
 		frame.getContentPane().add(lblItem);
-		
-		JLabel lblNewLabel = new JLabel("Cost: $");
-		lblNewLabel.setBounds(31, 55, 48, 14);
+
+		lblNewLabel = new JLabel("Cost: $");
+		lblNewLabel.setBounds(9, 58, 48, 14);
 		frame.getContentPane().add(lblNewLabel);
-		
-		JLabel lblQuantity = new JLabel("Quantity: ");
+
+		 lblQuantity = new JLabel("Quantity: ");
 		lblQuantity.setBounds(10, 89, 81, 14);
 		frame.getContentPane().add(lblQuantity);
-		
+
 		textFieldItem = new JTextField();
 		textFieldItem.setBounds(67, 28, 293, 17);
 		frame.getContentPane().add(textFieldItem);
 		textFieldItem.setColumns(10);
-		
+
 		textFieldCost = new JTextField();
 		textFieldCost.setBounds(67, 55, 293, 20);
 		frame.getContentPane().add(textFieldCost);
 		textFieldCost.setColumns(10);
-		
+
 		textFieldQuantity = new JTextField();
 		textFieldQuantity.setBounds(67, 86, 293, 20);
 		frame.getContentPane().add(textFieldQuantity);
 		textFieldQuantity.setColumns(10);
-		
-		JButton btnAdd = new JButton("Add Item To List");
+
+		btnAdd = new JButton("Add Item To List");
 		btnAdd.setBounds(137, 117, 133, 23);
 		frame.getContentPane().add(btnAdd);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 151, 418, 70);
 		frame.getContentPane().add(scrollPane);
-		
-		JTextArea textAreaList = new JTextArea();
+
+		textAreaList = new JTextArea();
 		scrollPane.setViewportView(textAreaList);
-		
-		JLabel lblListTotal = new JLabel("List Total:");
-		lblListTotal.setBounds(31, 232, 59, 14);
+
+		lblListTotal = new JLabel("List Total:");
+		lblListTotal.setBounds(9, 232, 59, 14);
 		frame.getContentPane().add(lblListTotal);
-		
-		JTextArea textAreaTotal = new JTextArea();
-		textAreaTotal.setBounds(82, 227, 293, 19);
-		frame.getContentPane().add(textAreaTotal);
+
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(66, 232, 346, 22);
+		frame.getContentPane().add(scrollPane_1);
+
+		textAreaTotal = new JTextArea();
+		scrollPane_1.setViewportView(textAreaTotal);
+
+		slip = new SalesSlip();
+	}
+
+	public void createEvents() {
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				buildOutput();
+			}
+		});
+
+	}
+
+	public void buildOutput() {
+		slip.addCart(textFieldItem.getText(), textFieldCost.getText(), textFieldQuantity.getText());
+		//slip.display();
+		textAreaList.setText(slip.display());
+		textAreaList.setLineWrap(true);
+		textAreaList.setWrapStyleWord(true);
+		textAreaTotal.setText(slip.totalSale());
+
 	}
 }
